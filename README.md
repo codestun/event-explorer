@@ -35,6 +35,7 @@ Serverless and PWAs have become essential in modern web development. This projec
 ## Serverless Function Integration
 The Event Explorer app utilizes serverless functions to manage authentication, data retrieval, and user interactions seamlessly. Powered by AWS Lambda, the app provides efficient OAuth2 authentication with the Google Calendar API and secure event data fetching. These functions also process event data for categorization and visualization. They assist in offline data caching, user preference storage, and real-time alerting, ensuring an enhanced user experience. Adopting a serverless approach guarantees scalability, reduced costs, and consistent app performance.
 
+![Event Explorer Architecture](https://github.com/codestun/event-explorer/raw/main/images/event-explorer-architecture.png)
 ## Project Requirements
 
 ### Key Features
