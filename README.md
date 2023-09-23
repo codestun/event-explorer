@@ -6,6 +6,7 @@
   - [Objective](#objective)
   - [Context](#context)
   - [The 5 Ws](#the-5-ws)
+  - [Serverless Function Integration](#serverless-function-integration)
   - [Project Requirements](#project-requirements)
     - [Key Features](#key-features)
     - [User Stories](#user-stories)
@@ -27,9 +28,12 @@ Serverless and PWAs have become essential in modern web development. This projec
 ## The 5 Ws
 1. **Who**: The Event Explorer is designed for users ranging from individuals to professionals and potential employers.
 2. **What**: It's a progressive web app with offline capabilities and a serverless backend developed using TDD.
-3. **When**: Users can access the app anytime to view upcoming events for a specific city, and your code is readily available on GitHub.
+3. **When**: Users can access the app anytime to view upcoming events for a specific city, and the code is readily available on GitHub.
 4. **Where**: The server is a serverless function hosted by a cloud provider (e.g., AWS), and the app is accessible online and offline, optimized for various devices.
 5. **Why**: Serverless is the future of cloud infrastructure, PWAs offer superior user experience, TDD ensures code quality, and data visualization enhances your skills as a web developer.
+
+## Serverless Function Integration
+The Event Explorer app utilizes serverless functions to manage authentication, data retrieval, and user interactions seamlessly. Powered by AWS Lambda, the app provides efficient OAuth2 authentication with the Google Calendar API and secure event data fetching. These functions also process event data for categorization and visualization. They assist in offline data caching, user preference storage, and real-time alerting, ensuring an enhanced user experience. Adopting a serverless approach guarantees scalability, reduced costs, and consistent app performance.
 
 ## Project Requirements
 
