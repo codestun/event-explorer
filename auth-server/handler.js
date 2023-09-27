@@ -63,28 +63,77 @@ module.exports.getAccessToken = async (event) => {
       return resolve(response);
     });
   })
-  .then((results) => {
-    // If the promise is resolved (i.e., successful), this block is executed.
+    .then((results) => {
+      // If the promise is resolved (i.e., successful), this block is executed
 
-    // Construct a success HTTP response with a status code of 200.
-    // The obtained access token (or other related data) is included in the response body as JSON.
-    return {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': true,
+      // Construct a success HTTP response with a status code of 200
+      // The obtained access token (or other related data) is included in the response body as JSON
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify(results),
+      };
+    })
+    .catch((error) => {
+      // If the promise is rejected (i.e., there was an error), this block is executed
+
+      // Construct an error HTTP response with a status code of 500
+      // The error message is included in the response body as JSON
+      return {
+        statusCode: 500,
+        body: JSON.stringify(error),
+      };
+    });
+};
+
+module.exports.getCalendarEvents = async (event) => {
+
+  // Decode the access token from the event's path parameters
+  const access_token = decodeURIComponent(
+    `${event.pathParameters.access_token}`
+  );
+
+  // Set the decoded token for the OAuth client
+  oAuth2Client.setCredentials({ access_token });
+
+  // Use a Promise to handle the asynchronous listing of calendar events
+  return new Promise((resolve, reject) => {
+    calendar.events.list(
+      {
+        calendarId: CALENDAR_ID,            // Use the specified Calendar ID
+        auth: oAuth2Client,                 // Use the authenticated client
+        timeMin: new Date().toISOString(),  // Set the minimum time to the current time
+        singleEvents: true,                 // Fetch single events, not recurring ones
+        orderBy: "startTime",               // Order the events by their start time
       },
-      body: JSON.stringify(results),
-    };
+      (error, response) => {
+        if (error) {
+          reject(error);  // If there's an error, stop and return it
+        } else {
+          resolve(response);  // If successful, continue with the response
+        }
+      }
+    );
   })
-  .catch((error) => {
-    // If the promise is rejected (i.e., there was an error), this block is executed.
-
-    // Construct an error HTTP response with a status code of 500.
-    // The error message is included in the response body as JSON.
-    return {
-      statusCode: 500,
-      body: JSON.stringify(error),
-    };
-  });
+    .then((results) => {
+      // Return the list of events with a successful status code (200)
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*', // Allow any website to access this
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify({ events: results.data.items }), // Return the list of events in the response body
+      };
+    })
+    .catch((error) => {
+      // If something goes wrong, return an error status code (500), indicating a server error
+      return {
+        statusCode: 500,
+        body: JSON.stringify(error),
+      };
+    });
 };
