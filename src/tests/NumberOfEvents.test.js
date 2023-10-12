@@ -9,7 +9,7 @@ describe('<NumberOfEvents /> Component', () => {
 
   // Set up the component before each test
   beforeEach(() => {
-    NumberOfEventsComponent = render(<NumberOfEvents />);
+    NumberOfEventsComponent = render(<NumberOfEvents setCurrentNOE={() => { }} />);
   });
 
   // Ensure the component is rendered

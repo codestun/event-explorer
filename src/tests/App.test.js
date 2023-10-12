@@ -7,6 +7,7 @@ import App from '../App';
 
 describe('<App /> component', () => {
   let AppDOM;
+
   beforeEach(() => {
     AppDOM = render(<App />).container.firstChild;
   })
@@ -25,6 +26,7 @@ describe('<App /> component', () => {
 });
 
 describe('<App /> integration', () => {
+
   test('renders a list of events matching the city selected by the user', async () => {
     const user = userEvent.setup();
     const AppComponent = render(<App />);
@@ -50,7 +52,23 @@ describe('<App /> integration', () => {
     allRenderedEventItems.forEach(event => {
       expect(event.textContent).toContain("Berlin, Germany");
     });
+  });
 
+  test('updates the number of events displayed when the user changes the number of events input', async () => {
+    const AppComponent = render(<App />);
+    const AppDOM = AppComponent.container.firstChild;
+
+    const NumberOfEventsDOM = AppDOM.querySelector('#number-of-events');
+    const NumberOfEventsInput = within(NumberOfEventsDOM).queryByTestId('number-of-events-input');
+
+    // Simulate user input
+    await userEvent.type(NumberOfEventsInput, '{backspace}{backspace}10');
+
+    const EventListDOM = AppDOM.querySelector('#event-list');
+    const allRenderedEventItems = within(EventListDOM).queryAllByRole('listitem');
+
+    // Check that the number of displayed events matches the user input
+    expect(allRenderedEventItems.length).toBe(10);
   });
 
 });
