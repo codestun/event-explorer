@@ -1,38 +1,154 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);
+
+/* Base colors */
+:root {
+  --primary-color: #2e4369;
+  --background-color: #f2f5f7;
+  --button-color: #00b9ff;
+  --secondary-color: #f6f6f6;
+  --shadow-color: rgba(0, 0, 0, 0.15);
+}
+
+.app-title {
+  font-size: 3em;
+  margin: 20px 0;
+  color: #2c3e50;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  background-color: var(--background-color);
+}
+
+input[type="text"],
+input[type="number"],
+.suggestions>li,
+.event-item {
+  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 0px 0px 5px var(--shadow-color);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+.suggestions>li:hover,
+.event-item:hover {
+  box-shadow: 0px 0px 8px var(--primary-color);
+}
+
+.event-details-btn {
+  position: absolute;
+  right: 25px;
+  bottom: 15px;
+  padding: 7px 12px;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  box-shadow: 2px 2px 4px var(--shadow-color);
+  transition: background-color 0.3s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.event-details-btn:hover {
+  background-color: var(--button-color);
+  color: var(--secondary-color);
+  transform: scale(1.05);
+}
+
 .App {
   text-align: center;
+  padding: 2% 5%;
+  margin: 0 auto;
+  max-width: 1200px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App * {
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+ul {
+  padding: 0;
+  list-style: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+p {
+  margin: 5px 0;
+}
+
+input[type="text"],
+input[type="number"] {
+  padding: 8px 6px 8px 10px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  line-height: 20px;
+  align-self: center;
+  height: 38px;
+  margin-bottom: 20px;
+}
+
+.city {
+  width: 250px;
+}
+
+#city-search {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: auto;
+  position: relative;
+  width: 250px;
 }
 
-.App-link {
-  color: #61dafb;
+#city-search label,
+#number-of-events label {
+  display: block;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#city-search input,
+#number-of-events input {
+  display: block;
+  margin: 0 auto;
+  margin-top: 8px;
+}
+
+.suggestions {
+  width: 250px;
+  position: absolute;
+  top: 47px;
+  z-index: 2;
+  align-self: center;
+  margin: 0;
+  font-size: 14px;
+  box-shadow: 10px 10px 16px -12px var(--shadow-color);
+  background-color: #eee;
+}
+
+.suggestions>li {
+  text-align: left;
+  padding: 8px 6px 8px 10px;
+  cursor: default;
+}
+
+.suggestions>li:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.suggestions>li:hover {
+  background-color: #bcdcdb;
+}
+
+.event-item {
+  background-color: var(--secondary-color);
+  padding: 10px 25px 35px;
+  margin-bottom: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  position: relative;
 }
