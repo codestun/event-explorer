@@ -6,7 +6,13 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
 import * as atatus from 'atatus-spa';
-atatus.config('46ff9210646d402a94f90be6e4e5b2c6').install();
+
+// Wrap the atatus initialization in a try-catch block
+try {
+  atatus.config('46ff9210646d402a94f90be6e4e5b2c6').install();
+} catch (error) {
+  console.error("Atatus initialization failed:", error);
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
