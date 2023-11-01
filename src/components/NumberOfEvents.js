@@ -5,7 +5,6 @@ import React from "react";
 const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
   const handleChange = (event) => {
     const value = event.target.value;
-    console.log(event.target.value)
     // Initialize ErrorText as an empty string
     let errorText = "";
 
