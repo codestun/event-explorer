@@ -9,7 +9,10 @@ describe('<NumberOfEvents /> Component', () => {
 
   // Set up the component before each test
   beforeEach(() => {
-    NumberOfEventsComponent = render(<NumberOfEvents setCurrentNOE={() => { }} />);
+    NumberOfEventsComponent = render(<NumberOfEvents
+      setCurrentNOE={() => { }}
+      setErrorAlert={() => { }}
+    />);
   });
 
   // Ensure the component is rendered
@@ -22,7 +25,7 @@ describe('<NumberOfEvents /> Component', () => {
   test('default number of events is 32 when user hasn’t specified a number', () => {
     const input = NumberOfEventsComponent.getByTestId('number-of-events-input');
     // Make sure the default value is set to 32
-    expect(input).toHaveValue(32);
+    expect(input).toHaveValue('32');
   });
 
   // Ensure the presence of the number input for user input
@@ -36,6 +39,6 @@ describe('<NumberOfEvents /> Component', () => {
     const input = NumberOfEventsComponent.getByTestId('number-of-events-input');
     // Simulate user typing to change the value
     await userEvent.type(input, '{backspace}{backspace}10');
-    expect(input).toHaveValue(10);
+    expect(input).toHaveValue('10');
   });
 });
