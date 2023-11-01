@@ -8,30 +8,36 @@ export const extractLocations = (events) => {
   return locations;
 };
 
+// Function to remove query parameters from the URL
 const removeQuery = () => {
   let newurl;
   if (window.history.pushState && window.location.pathname) {
-    newurl =
-      window.location.protocol +
-      "//" +
-      window.location.host +
-      window.location.pathname;
+    newurl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
     window.history.pushState("", "", newurl);
   } else {
-    newurl = window.location.protocol + "//" + window.location.host;
+    newurl = `${window.location.protocol}//${window.location.host}`;
     window.history.pushState("", "", newurl);
   }
 };
 
 // ----------- AUTHENTICATION FUNCTIONS -----------
+
+// Function to check the validity of an access token
 const checkToken = async (accessToken) => {
-  const response = await fetch(
-    `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
-  );
-  const result = await response.json();
-  return result;
+  try {
+    const response = await fetch(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`);
+    if (!response.ok) {
+      console.error(`Failed fetching token info: ${response.status}`);
+      return null;
+    }
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Error in checkToken:', error);
+  }
 };
 
+// Function to get an access token for API calls
 const getAccessToken = async () => {
   const accessToken = localStorage.getItem("access_token");
   const tokenCheck = accessToken && (await checkToken(accessToken));
@@ -51,9 +57,10 @@ const getAccessToken = async () => {
   return accessToken;
 };
 
+// Function to get a new token
 const getToken = async (code) => {
   const encodeCode = encodeURIComponent(code);
-  const response = await fetch('https://6h4vhy0k0f.execute-api.us-west-1.amazonaws.com/dev/api/token/' + encodeCode);
+  const response = await fetch(`https://6h4vhy0k0f.execute-api.us-west-1.amazonaws.com/dev/api/token/${encodeCode}`);
   const { access_token } = await response.json();
   access_token && localStorage.setItem("access_token", access_token);
 
@@ -61,6 +68,8 @@ const getToken = async (code) => {
 };
 
 // ----------- MAIN API CALLS -----------
+
+// Function to get events data
 export const getEvents = async () => {
   if (window.location.href.startsWith("http://localhost")) {
     return mockData;
@@ -70,11 +79,18 @@ export const getEvents = async () => {
 
   if (token) {
     removeQuery();
-    const url = `https://6h4vhy0k0f.execute-api.us-west-1.amazonaws.com/dev/api/get-events/${token}`;
-    const response = await fetch(url);
-    const result = await response.json();
-    if (result) {
+    try {
+      const url = `https://6h4vhy0k0f.execute-api.us-west-1.amazonaws.com/dev/api/get-events/${token}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        console.error(`Failed fetching events: ${response.status}`);
+        return null;
+      }
+      const result = await response.json();
       return result.events;
-    } else return null;
+    } catch (error) {
+      console.error('Error in getEvents:', error);
+      return null;
+    }
   }
 };
