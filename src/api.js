@@ -62,19 +62,35 @@ const getToken = async (code) => {
 
 // ----------- MAIN API CALLS -----------
 export const getEvents = async () => {
-  if (window.location.href.startsWith("http://localhost")) {
-    return mockData;
-  }
+  try {
+    NProgress.start();
+    if (window.location.href.startsWith("http://localhost")) {
+      return mockData;
+    }
 
-  const token = await getAccessToken();
+    if (!navigator.onLine) {
+      const events = localStorage.getItem("lastEvents");
+      return events ? JSON.parse(events) : [];
+    }
 
-  if (token) {
-    removeQuery();
-    const url = `https://6h4vhy0k0f.execute-api.us-west-1.amazonaws.com/dev/api/get-events/${token}`;
-    const response = await fetch(url);
-    const result = await response.json();
-    if (result) {
+    const token = await getAccessToken();
+
+    if (token) {
+      removeQuery();
+      const url = `https://6h4vhy0k0f.execute-api.us-west-1.amazonaws.com/dev/api/get-events/${token}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+      const result = await response.json();
+      localStorage.setItem("lastEvents", JSON.stringify(result.events));
       return result.events;
-    } else return null;
+    }
+    return [];
+  } catch (error) {
+    console.error("Could not get events:", error);
+    return [];
+  } finally {
+    NProgress.done();
   }
 };
