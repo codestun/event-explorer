@@ -1,5 +1,7 @@
 // src/api.js
 import mockData from './mock-data';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 // ----------- UTILITY FUNCTIONS -----------
 export const extractLocations = (events) => {
