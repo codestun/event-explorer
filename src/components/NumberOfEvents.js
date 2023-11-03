@@ -4,31 +4,28 @@ import React from "react";
 
 const NumberOfEvents = ({ setCurrentNOE, setErrorAlert }) => {
   const handleChange = (event) => {
-    const value = event.target.value;
-    // Initialize ErrorText as an empty string
+    const value = event.target.value.trim(); // Trim the value to handle spaces
     let errorText = "";
 
-    // Check if value is not a number
-    if (isNaN(value)) {
+    if (value === '') {
+      errorText = "Please enter a number";
+    } else if (isNaN(value)) {
       errorText = "Only numbers are allowed";
-    }
-    // Check if value is greater than 32
-    else if (value > 32) {
+    } else if (value > 32) {
       errorText = "Number should be 32 or less";
-    }
-    // Check if value is negative
-    else if (value < 0) {
+    } else if (value < 0) {
       errorText = "Number should be positive";
     }
 
     // Update the state only if there is no error
     if (errorText === "") {
-      setCurrentNOE(value);
+      setCurrentNOE(parseInt(value, 10)); // Parse the value as an integer
     }
 
     // Set the error message
     setErrorAlert(errorText);
   };
+
 
   return (
     <div id="number-of-events">
