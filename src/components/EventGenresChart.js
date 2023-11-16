@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
-import { PieChart, Pie, ResponsiveContainer } from 'recharts';
+import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 const EventGenresChart = ({ events }) => {
   const [data, setData] = useState([]);
-
-  // Genres that will make up the pie slices
   const genres = ['React', 'JavaScript', 'Node', 'jQuery', 'Angular'];
+
+  // Effect to update chart data when events change
+  useEffect(() => {
+    setData(getData());
+  }, [`${events}`]);
 
   // Function to calculate data for each genre
   const getData = () => {
@@ -18,8 +21,18 @@ const EventGenresChart = ({ events }) => {
     return data;
   };
 
+  // Custom color palette for the chart
+  const colors = ['#2e4369', '#00b9ff', '#33b07a', '#38a9c5', '#cc7af4'];
+
   // Function to render customized labels on the chart
-  const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, percent, index }) => {
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    outerRadius,
+    percent,
+    index,
+  }) => {
     const RADIAN = Math.PI / 180;
     const radius = outerRadius;
     const x = cx + radius * Math.cos(-midAngle * RADIAN) * 1.07;
@@ -28,7 +41,7 @@ const EventGenresChart = ({ events }) => {
       <text
         x={x}
         y={y}
-        fill="#8884d8"
+        fill={colors[index]}
         textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline="central"
       >
@@ -37,23 +50,23 @@ const EventGenresChart = ({ events }) => {
     ) : null;
   };
 
-  // Effect to update chart data when events change
-  useEffect(() => {
-    setData(getData());
-  }, [events]);
-
-  // Pie chart with customized labels
   return (
     <ResponsiveContainer width="99%" height={400}>
       <PieChart>
         <Pie
           data={data}
           dataKey="value"
-          fill="#8884d8"
+          cx="50%"
+          cy="50%"
           labelLine={false}
           label={renderCustomizedLabel}
-          outerRadius={150}
-        />
+          outerRadius={130}
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={colors[index]} />
+          ))}
+        </Pie>
+        <Legend verticalAlign="bottom" />
       </PieChart>
     </ResponsiveContainer>
   );
