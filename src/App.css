@@ -160,3 +160,19 @@ input[type="number"] {
   width: 250px;
   z-index: 1000;
 }
+
+.charts-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Two columns of equal width */
+  gap: 20px;
+  /* Optional: space between charts */
+}
+
+/* Adjust layout for smaller screens */
+@media (max-width: 768px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+    /* One column for smaller screens */
+  }
+}
