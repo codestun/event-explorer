@@ -11,6 +11,7 @@ import {
 const CityEventsChart = ({ allLocations, events }) => {
   const [data, setData] = useState([]);
 
+  // Effect to update chart data when allLocations or events change
   useEffect(() => {
     const getData = () => {
       return allLocations.map((location) => {
@@ -22,6 +23,9 @@ const CityEventsChart = ({ allLocations, events }) => {
 
     setData(getData());
   }, [allLocations, events]);
+
+  // Custom color for the scatter plot
+  const scatterColor = '#2e4369';
 
   return (
     <ResponsiveContainer width="99%" height={400}>
@@ -40,7 +44,7 @@ const CityEventsChart = ({ allLocations, events }) => {
         />
         <YAxis type="number" dataKey="count" name="Number of events" allowDecimals={false} />
         <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-        <Scatter name="A school" data={data} fill="#8884d8" />
+        <Scatter name="Events per city" data={data} fill={scatterColor} />
       </ScatterChart>
     </ResponsiveContainer>
   );
