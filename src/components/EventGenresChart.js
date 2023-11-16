@@ -18,12 +18,31 @@ const EventGenresChart = ({ events }) => {
     return data;
   };
 
+  // Function to render customized labels on the chart
+  const renderCustomizedLabel = ({ cx, cy, midAngle, outerRadius, percent, index }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = outerRadius;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN) * 1.07;
+    const y = cy + radius * Math.sin(-midAngle * RADIAN) * 1.07;
+    return percent ? (
+      <text
+        x={x}
+        y={y}
+        fill="#8884d8"
+        textAnchor={x > cx ? 'start' : 'end'}
+        dominantBaseline="central"
+      >
+        {`${genres[index]} ${(percent * 100).toFixed(0)}%`}
+      </text>
+    ) : null;
+  };
+
   // Effect to update chart data when events change
   useEffect(() => {
     setData(getData());
   }, [events]);
 
-  // Add pie chart UI
+  // Pie chart with customized labels
   return (
     <ResponsiveContainer width="99%" height={400}>
       <PieChart>
@@ -32,8 +51,8 @@ const EventGenresChart = ({ events }) => {
           dataKey="value"
           fill="#8884d8"
           labelLine={false}
-          label
-          outerRadius={130}
+          label={renderCustomizedLabel}
+          outerRadius={150}
         />
       </PieChart>
     </ResponsiveContainer>
