@@ -8,7 +8,7 @@ const EventGenresChart = ({ events }) => {
   // Effect to update chart data when events change
   useEffect(() => {
     setData(getData());
-  }, [`${events}`]);
+  }, [events]);
 
   // Function to calculate data for each genre
   const getData = () => {
